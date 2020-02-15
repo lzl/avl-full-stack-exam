@@ -48,16 +48,18 @@ function getNameAndTime(data, index) {
   return { key: index, ...data }
 }
 
-function RestaurantTable({ date }) {
+function RestaurantTable({ date }: { date?: Date }) {
   const { data, error } = useSWR('/api/data', fetcher)
 
   if (error) return <div>failed to load</div>
 
-  const columns = [
+  let columns = [
     {
       title: '名称',
       dataIndex: 'Name',
       key: 'name',
+      width: 100,
+      fixed: true,
     },
     {
       title: '周日',
@@ -96,20 +98,41 @@ function RestaurantTable({ date }) {
     },
   ]
 
+  if (!date) {
+    columns = [
+      ...columns,
+      {
+        title: '操作',
+        dataIndex: 'action',
+        key: 'action',
+        // render: () => <a>删除</a>, // maybe there is a bug at antd lib, it doesn't allow render.
+      },
+    ]
+  }
+
   if (!data) return <Table columns={columns} loading={true} />
 
-  const filteredData = data
-    .filter(data => filterByDateTime(data, date))
-    .map((data, index) => getNameAndTime(data, index))
+  let filteredData = []
+
+  if (date) {
+    filteredData = data
+      .filter(data => filterByDateTime(data, date))
+      .map((data, index) => getNameAndTime(data, index))
+  } else {
+    filteredData = data.map((data, index) => getNameAndTime(data, index))
+  }
 
   return (
     <div>
-      <div style={{margin: '1rem', fontSize: '16px', fontWeight: 'bold'}}>正在营业的餐厅（当前时间 / 您选择的时间）</div>
+      <div style={{ margin: '1rem', fontSize: '16px', fontWeight: 'bold' }}>
+        {date ? '正在营业的餐厅（当前时间 / 您选择的时间）' : '所有餐厅数据'}
+      </div>
       <Table
         dataSource={filteredData}
         columns={columns}
         pagination={false}
         bordered={true}
+        scroll={{ x: 1000, y: 600 }}
       />
     </div>
   )
