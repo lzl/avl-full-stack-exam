@@ -3,3 +3,4 @@ node_modules
 .now
 out
 .env
+.DS_Store
