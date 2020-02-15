@@ -5,6 +5,8 @@ import { Alert, Tabs } from 'antd'
 
 import Layout from '../components/Layout'
 import LoginForm from '../components/LoginForm'
+import RestaurantTable from '../components/RestaurantTable'
+import RestaurantForm from '../components/RestaurantForm'
 import dashBoardMachine from '../machines/dashboard'
 
 const Dashboard: NextPage = () => {
@@ -54,6 +56,12 @@ const Dashboard: NextPage = () => {
             isLoading={current.matches({ auth: { loggingIn: 'loading' } })}
           />
         </section>
+      )}
+      {current.matches({ auth: 'loggedIn' }) && (
+        <div style={{ marginTop: '1rem' }}>
+          <RestaurantForm />
+          <RestaurantTable />
+        </div>
       )}
     </Layout>
   )
