@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import jwtDecode from 'jwt-decode'
 
 import Layout from '../components/Layout'
@@ -23,7 +24,18 @@ const IndexPage: NextPage = () => {
 
   return (
     <Layout title="餐厅列表">
-      {user ? <UserInfo user={user} /> : <GoogleLoginButton />}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {user ? <UserInfo user={user} /> : <GoogleLoginButton />}
+        <Link href="/dashboard">
+          <a>后台管理</a>
+        </Link>
+      </div>
       <div style={{ marginTop: '1rem' }}>
         <DateTimeForm setDate={setDate} />
       </div>
