@@ -45,7 +45,7 @@ function filterByDateTime(data, date: Date) {
 }
 
 function getNameAndTime(data, index) {
-  return { key: index, name: data.Name }
+  return { key: index, ...data }
 }
 
 function RestaurantTable({ date }) {
@@ -55,9 +55,44 @@ function RestaurantTable({ date }) {
 
   const columns = [
     {
-      title: '正在营业的餐厅',
-      dataIndex: 'name',
+      title: '名称',
+      dataIndex: 'Name',
       key: 'name',
+    },
+    {
+      title: '周日',
+      dataIndex: 'Sun',
+      key: 'sun',
+    },
+    {
+      title: '周一',
+      dataIndex: 'Mon',
+      key: 'mon',
+    },
+    {
+      title: '周二',
+      dataIndex: 'Tue',
+      key: 'tue',
+    },
+    {
+      title: '周三',
+      dataIndex: 'Wed',
+      key: 'wed',
+    },
+    {
+      title: '周四',
+      dataIndex: 'Thu',
+      key: 'thu',
+    },
+    {
+      title: '周五',
+      dataIndex: 'Fri',
+      key: 'fri',
+    },
+    {
+      title: '周六',
+      dataIndex: 'Sat',
+      key: 'sat',
     },
   ]
 
@@ -68,12 +103,15 @@ function RestaurantTable({ date }) {
     .map((data, index) => getNameAndTime(data, index))
 
   return (
-    <Table
-      dataSource={filteredData}
-      columns={columns}
-      pagination={false}
-      bordered={true}
-    />
+    <div>
+      <div style={{margin: '1rem', fontSize: '16px', fontWeight: 'bold'}}>正在营业的餐厅（当前时间 / 您选择的时间）</div>
+      <Table
+        dataSource={filteredData}
+        columns={columns}
+        pagination={false}
+        bordered={true}
+      />
+    </div>
   )
 }
 
